@@ -8,16 +8,16 @@ import { devRoutes } from './routes/dev-routes';
 import { deckRoutes } from './routes/deck-routes';
 import { marketRoutes } from './routes/market-routes';
 import { Server as SocketIO } from 'socket.io';
-// import { lobbyRoutes } from './routes/lobby-routes2';
+import { lobbyRoutes } from './routes/lobby-routes2';
 import { privateroomRoutes } from './routes/privateroom-routes';
 import { liveroomRoutes } from './routes/liveroom-routes'
 import { setSocket } from './utils/socket';
 import http from 'http';
 import { Client } from 'pg';
 import dotenv from 'dotenv';
-import { initialize as initLobbyRoutes, lobbyRoutes } from './routes/lobby-routes2';
 
 import { refill } from './utils/refillTimer'
+import { client } from './utils/db';
 
 
 dotenv.config();
@@ -31,24 +31,6 @@ export const server = new http.Server(app);
 export const io = new SocketIO(server);
 
 
-
-// [9.30 lesson test]
-// import Knex from "knex";
-// const knexConfigs = require("./knexfile");
-// const configMode = process.env.NODE_ENV || "development";
-// const knexConfig = knexConfigs[configMode];
-// const knex = Knex(knexConfig);
-// async function trythis() {
-//     console.log('running for knex')
-//     const result = await knex
-//         .select("*")
-//         .from("users");
-//     console.log('line 27 ==', result)
-// }
-// trythis()
-
-
-
 // Login page first
 app.get('/', (req, res, next) => {
     if (req.session && req.session['user'] && Object.keys(req.session['user']).length > 0) {
@@ -57,14 +39,6 @@ app.get('/', (req, res, next) => {
         res.status(200).redirect('login.html')
     }
 })
-
-// [resume here]
-export const client = new Client({
-    database: process.env.DB_NAME,
-    user: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD
-});
-client.connect();
 
 
 export const sessionMiddleware = expressSession({
@@ -84,11 +58,6 @@ app.use(sessionMiddleware);
 // 		name?: String;
 // 	}
 // }
-
-
-
-// LobbyRoutes works now
-initLobbyRoutes(client, io)
 
 
 
@@ -293,13 +262,10 @@ app.post('/purchase', (req, res) => {
 
 
 // call timer from refillTimer.ts in utils
-setInterval(refill, 1000)
+setInterval(refill, 100)
 
 setSocket(io)
 const PORT = 8080;
 server.listen(PORT, () => {
     console.log(`Listening at http://localhost:${PORT}/`);
 });
-
-
-
