@@ -8,7 +8,7 @@ import { devRoutes } from './routes/dev-routes';
 import { deckRoutes } from './routes/deck-routes';
 import { marketRoutes } from './routes/market-routes';
 import { Server as SocketIO } from 'socket.io';
-import { lobbyRoutes } from './routes/lobby-routes2';
+import { lobbyRoutes, initialize } from './routes/lobby-routes2';
 import { privateroomRoutes } from './routes/privateroom-routes';
 import { liveroomRoutes } from './routes/liveroom-routes'
 import { setSocket } from './utils/socket';
@@ -229,7 +229,7 @@ app.post("/create-payment-intent", async (req, res) => {
 // createCustomer();
 
 // import {lobbyRoutes} from './routes/lobby-routes';
-
+initialize(client, io)
 app.use(lobbyRoutes)
 app.use(userRoutes)
 app.use(marketRoutes)

@@ -62,14 +62,15 @@ export class lobbyRoutesController {
     deleteRoomC = async (req: express.Request, res: express.Response) => {
         let usn = req.body.username; //the box's host
         let usnid = req.body.userid;//the box's host id
-        let currentuser = req.body.socketid; //currentuser
-        let currentuserid = req.body.currentuserid; //currentuser id
+        let currentuser = req.session.user.username; //currentuser
+        let currentuserid = req.session.user.id; //currentuser id
         // aindex = find currentuser from availableusers
         const aindex = availableusers.findIndex(function (availableusers) {
             return currentuser == availableusers['username']
         })
         //if host press quit room
         if (availableusers[aindex]['username'] == usn) {
+            console.log('quit room')
             const index = lobbyrooms.findIndex(function (lobbyrooms) {
                 return currentuser == lobbyrooms['host']
             })
@@ -135,12 +136,16 @@ export class lobbyRoutesController {
 
     }
     joinedCommercialC = async (req: express.Request, res: express.Response) => {
-        res.json(this.lobbyRoutesService.joinedCommercial(req, res))
+        // console.log('this.lobbyRoutesService.joinedCommercial(req, res)', await this.lobbyRoutesService.joinedCommercial(req, res)['username'])
+        // [test] above line cannot be print indiv term but it's a promise => so must await or have error
+        // [very imp] [focus] all this.lobbyRoutesService needs await, even json
+        res.json(await this.lobbyRoutesService.joinedCommercial(req, res))
         return
     }
     earnedFromCommercialC = async (req: express.Request, res: express.Response) => {
         await this.lobbyRoutesService.earnedFromCommercial(req, res);
-        this.io.to(req.body.userid).emit('redirect', '/lobbyroom/lobby.html')
+        this.io.to(req.session.user.username).emit('redirect', '/lobbyroom/lobby.html')
+        console.log('earned from com controller side')
         res.send();
         return
     }
