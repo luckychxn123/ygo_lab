@@ -262,7 +262,7 @@ app.post('/purchase', (req, res) => {
 
 
 // call timer from refillTimer.ts in utils
-setInterval(refill, 100)
+setInterval(refill, 2000)
 
 setSocket(io)
 const PORT = 8080;

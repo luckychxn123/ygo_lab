@@ -6,7 +6,7 @@ import { io } from "../utils/socket"
 // app.use(express.json())
 
 // timer config for refilling (in seconds)
-const countDownConfig = 10
+const countDownConfig = 60
 let countDown = countDownConfig
 let consoleLogTheTimer = false
 let consoleLogWhenRefilled = false
