@@ -12,7 +12,6 @@ export let lobbyRoutes = express.Router()
 // knex
 
 
-
 export function initialize(client: Client, io: SocketIO) {
     const oldlrs = new lobbyRoutesService(client);
     const lrc = new lobbyRoutesController(oldlrs, io);

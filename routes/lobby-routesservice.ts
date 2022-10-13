@@ -4,6 +4,11 @@ import express, { Request, Response } from 'express'
 
 import { client } from "../utils/db";
 import { Client } from 'pg'; //this is a type from library so must import from library, not from other file wrote ourselves
+import { Knex } from "knex";
+
+
+
+
 import { SocketAddressInitOptions } from 'net';
 import SocketIO from 'socket.io';
 import { io } from '../utils/socket';
@@ -78,6 +83,8 @@ export class lobbyRoutesService {
 }
 export async function fetchdeckcards(userid: number, deckarray: Array<['string']>,
     dict: Object) {
+    // let alld = await knex.select('*').from('user_decks').where('user_id', `${userid}`);
+    // console.log('alld - ', alld)
     let alld = await client.query(`select * from user_decks where user_id = ${userid};`)
     let all = await client.query(`select * from user_decks 
     inner join user_deck_cards on user_deck_cards.user_deck_id = user_decks.id
@@ -86,6 +93,7 @@ export async function fetchdeckcards(userid: number, deckarray: Array<['string']
     where user_cards.user_id = ${userid};`)
     let deckimgrows = all.rows;
     let deckrows = alld.rows;
+    // let deckrows = alld;
     for (let d of deckrows) {
         deckarray.push(d['deck_name'])
     }

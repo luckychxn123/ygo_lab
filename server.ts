@@ -9,15 +9,22 @@ import { deckRoutes } from './routes/deck-routes';
 import { marketRoutes } from './routes/market-routes';
 import { Server as SocketIO } from 'socket.io';
 import { lobbyRoutes, initialize } from './routes/lobby-routes2';
+import { innerLobbyRoutes, innerLobbyInitialize } from './routes/lobbyinner-routes';
 import { privateroomRoutes } from './routes/privateroom-routes';
 import { liveroomRoutes } from './routes/liveroom-routes'
 import { setSocket } from './utils/socket';
 import http from 'http';
 import { Client } from 'pg';
 import dotenv from 'dotenv';
-
 import { refill } from './utils/refillTimer'
 import { client } from './utils/db';
+
+
+import Knex from "knex";
+const knexConfigs = require("./knexfile");
+const configMode = process.env.NODE_ENV || "development";
+const knexConfig = knexConfigs[configMode];
+export const knex = Knex(knexConfig);
 
 
 dotenv.config();
@@ -51,13 +58,6 @@ export const sessionMiddleware = expressSession({
 
 app.use(sessionMiddleware);
 
-
-
-// declare module "express-session" {
-// 	interface SessionData {
-// 		name?: String;
-// 	}
-// }
 
 
 
@@ -228,9 +228,12 @@ app.post("/create-payment-intent", async (req, res) => {
 // };
 // createCustomer();
 
-// import {lobbyRoutes} from './routes/lobby-routes';
+
 initialize(client, io)
+innerLobbyInitialize(knex)
+
 app.use(lobbyRoutes)
+app.use(innerLobbyRoutes)
 app.use(userRoutes)
 app.use(marketRoutes)
 app.use(privateroomRoutes)

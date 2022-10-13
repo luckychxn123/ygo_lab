@@ -22,6 +22,7 @@
   <body>
     <img src="lobbybg.jpeg" class="lobbybgimg2" />
     <img src="lobbybg2.gif" class="lobbybgimg" />
+    <p class="welcomespeech"></p>
     <div class="outer">
       <div id="header"></div>
       <!-- <script src="/commonFrontEnd/navBar.js"></script> -->
@@ -43,7 +44,6 @@
       </section>
       <div class="left">
         <div class="innerleft">
-
           <h3> Welcome, <span class="currentuser"></span></h3>
           <div class="secinnerleft">
             <button type="button" class="createroom">Create room</button>
@@ -75,8 +75,10 @@
         let createliveroom = document.querySelector('.createliveroom')
         let roomName = document.querySelector('[name="rname"]')
         let watchcommercial = document.querySelector('.watchcommercial')
+        let welcomespeech = document.querySelector('.welcomespeech');
         let invitebuttons;
         let currentuserid;
+
 
         let joinliveroom;
 
@@ -91,6 +93,15 @@
             currentuserid = user.data.id
             console.log('user.data.username - ', user.data.username)
             console.log('user.data.id-', user.data.id)
+          }
+        }
+
+        async function getWelcomeSpeech() {
+          let res = await fetch('/innerLobbySpeech')
+          if (res.ok) {
+            let data = await res.json()
+            welcomespeech.innerHTML = data.welcomespeech
+            console.log('welcomespeech ', welcomespeech.innerHTML)
           }
         }
 
@@ -317,6 +328,7 @@
           getUserProfile()
           createRoomEvent()
           setSocketEvent()
+          getWelcomeSpeech()
         }
         init()
       </script>

@@ -4,10 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node server.ts",
-    "dev": "ts-node-dev main.ts",
+    "start": "ts-node-dev server.ts",
     "build": "ts-node-dev ./deckBuilding.ts",
-    "test": "jest"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "luckychxn123 <cnhk914346118@gmail.com>",
   "license": "ISC",

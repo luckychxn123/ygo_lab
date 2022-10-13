@@ -1,6 +1,6 @@
+import type { Knex } from "knex";
 import dotenv from 'dotenv';
 dotenv.config();
-
 // Update with your config settings.
 
 module.exports = {
@@ -12,7 +12,7 @@ module.exports = {
       password: process.env.DB_PASSWORD
     },
     pool: {
-      min: 1,
+      min: 2,
       max: 10
     },
     migrations: {
