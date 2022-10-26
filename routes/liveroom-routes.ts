@@ -3,8 +3,10 @@ import { fetchdeckcards, fetchcards } from './lobby-routesservice';
 import { appendFile } from 'fs';
 import { stringify } from 'querystring';
 // import { client, io } from '../server'
-import { io } from '../utils/socket'
+import { Server as SocketIO } from 'socket.io';
+import { setSocket } from '../utils/socket'
 import { client } from "../utils/db";
+import { io } from '../utils/socket'
 import { availableusers, lobbyrooms, setAvailableusers, setLobbyrooms, lobbyliverooms, setLobbyliverooms } from "./lobby-routescontroller"
 
 
